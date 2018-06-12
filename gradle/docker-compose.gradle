@@ -7,8 +7,6 @@ if (project.hasProperty('profile')) {
   }
 }
 
-println("using docker compose file: $dockerComposeFile")
-
 apply plugin: 'com.avast.gradle.docker-compose'
 
 dockerCompose {
