@@ -21,13 +21,30 @@ ifdef::backend-html5[image:https://travis-ci.org/daggerok/{root-project-name}.sv
 GitLab CI status:
 ifdef::backend-html5[image:https://gitlab.com/daggerok/{root-project-name}/badges/master/build.svg["Build Status", link={gitlab-url}]]
 
-PDF:
-ifdef::backend-html5[link:./index.pdf["Documentation in PFD format"]]
-
 == Introduction
 
 include::../../README.adoc[tags=content]
 
-== Implementation
+== BOM
 
-//TODO: iplement documentation...
+.maven
+[source,xml]
+----
+include::../../pom.xml[tags=content]
+----
+
+.gradle
+[source,groovy]
+----
+include::../../gradle/spring-boot.gradle[tags=content]
+----
+
+== Links
+
+ifdef::backend-html5[link:./index.pdf[Documentation in PFD format]]
+
+ifdef::backend-html5[link:https://daggerok.github.io/{root-project-name}[GitHub Pages]]
+
+ifdef::backend-html5[link:https://daggerok.gitlab.io/{root-project-name}[GitLab Pages]]
+
+ifdef::backend-html5[link:https://camel.apache.org/components.html[Apache Camel Components]]
