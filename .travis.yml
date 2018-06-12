@@ -31,11 +31,13 @@ script:
 - java -jar ./build/libs/*.jar &
 - wait_for 8080
 - http :8080
+- sleep 1
 - stop_any 8080 80
 #
 - bash ./build/libs/*.jar &
 - wait_for 8080
 - http :8080
+- sleep 1
 - stop_any 8080 80
 #
 - bash gradlew composeUp
@@ -46,16 +48,19 @@ script:
 - java -jar ./target/*.jar &
 - wait_for 8080
 - http :8080
+- sleep 1
 - stop_any 8080 80
 #
 - bash ./target/*.jar &
 - wait_for 8080
 - http :8080
+- sleep 1
 - stop_any 8080 80
 #
 - bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
 - sleep 25
 - http :8080
+- sleep 1
 - bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
 
 before_cache:
