@@ -4,6 +4,7 @@ service:
 env:
   global:
   - TERM=dumb
+  - secure: fhZqFbbvRCRWF+xcWQzQnbnzVp378lxKsvvfTzDf443kNoS3d424jY07uWacjGwScCR3mPb/X8Zxleuq73obOAMv33gciqh8UJteyPuUwB/NQIDwyDIt9J2U/xOobZPLuUdc+J48uxmrpr4geTb2gK4FvzKcHu46ZAaRXTlr2KAdIVXh2gH45psP7xEeVDCW4qxoG09vGMvR+VvLoe/79qi1VK/t+Ldmtfl7apPVhoZYpRhNXQ9l0vQjd6mMezy/AGNFLinKM9PaXZo+V/WAL7FQuopuBrJNZZyJpIdfLlczSd+6zRnMJYbFPMogOEJwPsDCrrQNalBdtGy62XhGeR4CjNWAaJs/cCkrjfMjxn+7sfbvl7fseL6QHoosd88x6NiGftAp6rO9TswhPcOnuE983R5ViG56mwF/kJYfaVezwQ74naLN7J6lADiqV7ULBO7mGVftzPXa2XAj/+pcjDDk36YMALXC+ZlIuhMW+GZY5PjtTJLylOm32sxCJzPBBFxIPpa0I/ANHiH7mVC3WhopTM5adCrPdv8OwTbMlwtkhSLzTiaEEe+qBx6K5v2OzqBPvbrIHMFyPwBS8oVlZPpw22d7No7gh07AT7FGvAok5qJX0+0sg65SaSW/obgn6SXzyf0FFh8lXrjquDmE0rchxa1q4aBiIOM+B3plRRI=
 
 language: java
 jdk: oraclejdk8
@@ -16,13 +17,12 @@ apt:
   - curl
   - jq
   - libxml2-utils
-#  - docker-ce
   - python-pip
+  - docker-ce
 
 install: true
 before_script:
 - sudo pip install httpie >/dev/null 2>&1
-#- sudo pip install docker-compose httpie >/dev/null 2>&1
 - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
 - stop_any 8080 80
 
@@ -42,7 +42,9 @@ script:
 #
 - bash gradlew composeUp
 - http :8080
+- sleep 1
 - bash gradlew composeDown
+- stop_any 8080 80
 #
 - bash mvnw >/dev/null
 - java -jar ./target/*.jar &
@@ -63,6 +65,14 @@ script:
 - sleep 1
 - bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
 
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: "$GITHUB_TOKEN"
+  keep-history: true
+  on:
+    branch: master
+
 before_cache:
 - sudo rm -rf $HOME/.gradle/caches/4.8/fileHashes/fileHashes.bin
 - sudo rm -rf $HOME/.gradle/caches/4.8/fileHashes/fileHashes.lock
@@ -70,5 +80,5 @@ before_cache:
 
 cache:
   directories:
-  - $HOME/.m2
-  - $HOME/.gradle
+  - "$HOME/.m2"
+  - "$HOME/.gradle"
