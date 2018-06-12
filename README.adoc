@@ -1,6 +1,8 @@
 = spring-boot-apache-camel-1-x image:https://travis-ci.org/daggerok/apache-camel-spring-boot-1.x.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/apache-camel-spring-boot-1.x"]
 
 //tag::content[]
+link:https://daggerok.github.io/apache-camel-spring-boot-1.x[Reference documentation]
+
 .gradle
 [source,bash]
 ----
