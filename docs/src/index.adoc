@@ -29,6 +29,27 @@ image:https://travis-ci.org/daggerok/{root-project-name}.svg?branch=master["Buil
 
 include::../../README.adoc[tags=content]
 
+== Implementation
+
+=== camel spring configuration
+
+.src/main/resources/application.properties
+[source,properties]
+----
+include::../../src/main/resources/application.properties[content]
+----
+
+=== move all files from directory
+
+source directory: `/tmp/camel-in/`
+destination directory: `/tmp/camel-out/`
+
+.src/main/java/daggerok/app/MoveFilesCamelConfig.java
+[source,java]
+----
+include::../../src/main/java/daggerok/app/MoveFilesCamelConfig.java[content]
+----
+
 == BOM
 
 .maven
