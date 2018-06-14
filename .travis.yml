@@ -160,8 +160,8 @@ script:
 #- docker cp ${CONTAINER_ID}:/tmp/camel-filename-out /tmp/camel-filename-maven
 #- docker cp ${CONTAINER_ID}:/tmp/camel-exchange-out /tmp/camel-exchange-maven
 #- docker cp ${CONTAINER_ID}:/tmp/camel-easier-exchange-out /tmp/camel-easier-exchange-maven
-#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-out /tmp/camel-choice-out-gradle
-#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-error /tmp/camel-choice-error-gradle
+#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-out /tmp/camel-choice-out-maven
+#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-error /tmp/camel-choice-error-maven
 #- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
 #- stop_any 8080 80 8080 80
 #- ls /tmp/*
