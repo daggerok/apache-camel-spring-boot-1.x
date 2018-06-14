@@ -559,7 +559,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2018-06-14 20:29:55 UTC</span>
+<span id="revdate">2018-06-14 21:49:15 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -569,6 +569,7 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel2">
 <li><a href="#camel-spring-configuration">2.1. camel spring configuration</a></li>
 <li><a href="#move-all-files-from-directory">2.2. move all files from directory</a></li>
+<li><a href="#move-files-via-jms">2.3. move files via jms</a></li>
 </ul>
 </li>
 <li><a href="#bom">3. BOM</a></li>
@@ -638,14 +639,80 @@ destination directory: <code>/tmp/camel-out/</code></p>
 <span class="directive">public</span> <span class="type">class</span> <span class="class">MoveFilesCamelConfig</span> {
 
   <span class="annotation">@Bean</span>
-  <span class="directive">public</span> RouteBuilder copyDirectoryRoute() {
+  <span class="directive">public</span> RouteBuilder moveFilesRoute() {
     <span class="keyword">return</span> <span class="keyword">new</span> RouteBuilder() {
       <span class="annotation">@Override</span>
       <span class="directive">public</span> <span class="type">void</span> configure() <span class="directive">throws</span> <span class="exception">Exception</span> {
         from(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-in</span><span class="delimiter">&quot;</span></span>)
+            .routeId(<span class="string"><span class="delimiter">&quot;</span><span class="content">dir-to-dir</span><span class="delimiter">&quot;</span></span>)
             .to(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-out</span><span class="delimiter">&quot;</span></span>);
       }
     };
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="move-files-via-jms"><a class="anchor" href="#move-files-via-jms"></a>2.3. move files via jms</h3>
+<div class="paragraph">
+<p>source directory: <code>/tmp/camel-in-jms/</code>
+process queue: <code>files</code>
+destination directory: <code>/tmp/camel-jms-out/</code></p>
+</div>
+<div class="listingblock">
+<div class="title">move files via jms queue <code>jms:queue:files</code></div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Slf4j</span>
+<span class="annotation">@Configuration</span>
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MoveFilesViaJmsCamelConfig</span> {
+
+  <span class="annotation">@Bean</span>
+  <span class="directive">public</span> RouteBuilder moveFilesViaJmsRoute() {
+    <span class="keyword">return</span> <span class="keyword">new</span> RouteBuilder() {
+      <span class="annotation">@Override</span>
+      <span class="directive">public</span> <span class="type">void</span> configure() <span class="directive">throws</span> <span class="exception">Exception</span> {
+
+        from(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-jms-in</span><span class="delimiter">&quot;</span></span>)
+            .routeId(<span class="string"><span class="delimiter">&quot;</span><span class="content">in-dir-to-jms</span><span class="delimiter">&quot;</span></span>)
+            .transform()
+            .body(GenericFile.class, genericFile -&gt; {
+              <span class="directive">final</span> <span class="predefined-type">File</span> file = <span class="predefined-type">File</span>.class.cast(genericFile.getFile());
+              <span class="keyword">try</span> (<span class="directive">final</span> <span class="predefined-type">FileInputStream</span> inputStream = <span class="keyword">new</span> <span class="predefined-type">FileInputStream</span>(file)) {
+                <span class="directive">final</span> <span class="predefined-type">InputStreamReader</span> streamReader = <span class="keyword">new</span> <span class="predefined-type">InputStreamReader</span>(inputStream);
+                <span class="directive">final</span> <span class="predefined-type">BufferedReader</span> in = <span class="keyword">new</span> <span class="predefined-type">BufferedReader</span>(streamReader);
+                <span class="keyword">return</span> in.lines().collect(joining());
+              } <span class="keyword">catch</span> (<span class="exception">IOException</span> e) {
+                log.error(e.getLocalizedMessage());
+                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="exception">RuntimeException</span>(e);
+              }
+            })
+            .to(<span class="string"><span class="delimiter">&quot;</span><span class="content">jms:queue:files</span><span class="delimiter">&quot;</span></span>)
+        ;
+
+        from(<span class="string"><span class="delimiter">&quot;</span><span class="content">jms:queue:files</span><span class="delimiter">&quot;</span></span>)
+            .routeId(<span class="string"><span class="delimiter">&quot;</span><span class="content">jms-to-out-dir</span><span class="delimiter">&quot;</span></span>)
+            .to(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-jms-out</span><span class="delimiter">&quot;</span></span>)
+        ;
+      }
+    };
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">jms component customizer</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Component</span>
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="type">class</span> <span class="class">ApplicationJmsComponentCustomizer</span> <span class="directive">implements</span> ComponentCustomizer&lt;JmsComponent&gt; {
+
+  <span class="directive">final</span> ConnectionFactory connectionFactory;
+
+  <span class="annotation">@Override</span>
+  <span class="directive">public</span> <span class="type">void</span> customize(JmsComponent component) {
+    component.setConnectionFactory(connectionFactory);
   }
 }</code></pre>
 </div>
@@ -697,7 +764,7 @@ destination directory: <code>/tmp/camel-out/</code></p>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-06-14 20:29:55 UTC
+Last updated 2018-06-14 21:49:15 UTC
 </div>
 </div>
 </body>
