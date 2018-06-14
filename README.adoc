@@ -3,7 +3,7 @@
 //tag::content[]
 link:https://daggerok.github.io/apache-camel-spring-boot-1.x[Reference documentation]
 
-link:./travis.yml[See Travis CI integration tests for details]
+link:https://github.com/daggerok/apache-camel-spring-boot-1.x/blob/master/.travis.yml[See Travis CI integration tests for details]
 
 //.gradle
 //[source,bash]
