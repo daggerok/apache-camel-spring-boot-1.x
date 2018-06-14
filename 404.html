@@ -559,14 +559,20 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2018-06-12 21:10:12 UTC</span>
+<span id="revdate">2018-06-14 22:07:19 EEST</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#introduction">1. Introduction</a></li>
-<li><a href="#bom">2. BOM</a></li>
-<li><a href="#links">3. Links</a></li>
+<li><a href="#implementation">2. Implementation</a>
+<ul class="sectlevel2">
+<li><a href="#camel-spring-configuration">2.1. camel spring configuration</a></li>
+<li><a href="#move-all-files-from-directory">2.2. move all files from directory</a></li>
+</ul>
+</li>
+<li><a href="#bom">3. BOM</a></li>
+<li><a href="#links">4. Links</a></li>
 </ul>
 </div>
 </div>
@@ -607,7 +613,60 @@ bash target/*.jar</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="bom"><a class="anchor" href="#bom"></a>2. BOM</h2>
+<h2 id="implementation"><a class="anchor" href="#implementation"></a>2. Implementation</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="camel-spring-configuration"><a class="anchor" href="#camel-spring-configuration"></a>2.1. camel spring configuration</h3>
+<div class="listingblock">
+<div class="title">src/main/resources/application.properties</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties">spring.profiles.include[0]=spring-boot
+#tag:content[]
+camel.springboot.main-run-controller=true
+#end:content[]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="move-all-files-from-directory"><a class="anchor" href="#move-all-files-from-directory"></a>2.2. move all files from directory</h3>
+<div class="paragraph">
+<p>source directory: <code>/tmp/camel-in/</code>
+destination directory: <code>/tmp/camel-out/</code></p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/daggerok/app/MoveFilesCamelConfig.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">package</span> <span class="namespace">daggerok.app</span>;
+
+<span class="keyword">import</span> <span class="include">lombok.RequiredArgsConstructor</span>;
+<span class="keyword">import</span> <span class="include">org.apache.camel.builder.RouteBuilder</span>;
+<span class="keyword">import</span> <span class="include">org.springframework.context.annotation.Bean</span>;
+<span class="keyword">import</span> <span class="include">org.springframework.context.annotation.Configuration</span>;
+
+<span class="comment">//tag::moveFiles[]</span>
+<span class="annotation">@Configuration</span>
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MoveFilesCamelConfig</span> {
+
+  <span class="annotation">@Bean</span>
+  <span class="directive">public</span> RouteBuilder copyDirectoryRoute() {
+    <span class="keyword">return</span> <span class="keyword">new</span> RouteBuilder() {
+      <span class="annotation">@Override</span>
+      <span class="directive">public</span> <span class="type">void</span> configure() <span class="directive">throws</span> <span class="exception">Exception</span> {
+        from(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-in</span><span class="delimiter">&quot;</span></span>)
+            .to(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-out</span><span class="delimiter">&quot;</span></span>);
+      }
+    };
+  }
+}
+<span class="comment">//end::moveFiles[]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="bom"><a class="anchor" href="#bom"></a>3. BOM</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="title">maven</div>
@@ -635,7 +694,7 @@ bash target/*.jar</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="links"><a class="anchor" href="#links"></a>3. Links</h2>
+<h2 id="links"><a class="anchor" href="#links"></a>4. Links</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="./index.pdf">Documentation in PFD format</a></p>
@@ -650,7 +709,7 @@ bash target/*.jar</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-06-12 21:10:12 UTC
+Last updated 2018-06-14 22:07:19 EEST
 </div>
 </div>
 </body>
