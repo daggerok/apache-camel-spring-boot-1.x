@@ -559,7 +559,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2018-06-14 22:25:37 UTC</span>
+<span id="revdate">2018-06-14 22:36:00 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -570,6 +570,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#camel-spring-configuration">2.1. camel spring configuration</a></li>
 <li><a href="#move-all-files-from-directory">2.2. move all files from directory</a></li>
 <li><a href="#move-files-via-jms">2.3. move files via jms</a></li>
+<li><a href="#change-filename-by-using-camel-header">2.4. change filename by using camel header</a></li>
 </ul>
 </li>
 <li><a href="#bom">3. BOM</a></li>
@@ -643,7 +644,7 @@ destination directory: <code>/tmp/camel-out/</code></p>
 <div class="sect2">
 <h3 id="move-files-via-jms"><a class="anchor" href="#move-files-via-jms"></a>2.3. move files via jms</h3>
 <div class="paragraph">
-<p>source directory: <code>/tmp/camel-in-jms/</code>
+<p>source directory: <code>/tmp/camel-jms-in/</code>
 process queue: <code>files</code>
 destination directory: <code>/tmp/camel-jms-out/</code></p>
 </div>
@@ -705,6 +706,35 @@ destination directory: <code>/tmp/camel-jms-out/</code></p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="change-filename-by-using-camel-header"><a class="anchor" href="#change-filename-by-using-camel-header"></a>2.4. change filename by using camel header</h3>
+<div class="paragraph">
+<p>source directory: <code>/tmp/camel-filename-in/</code>
+destination directory: <code>/tmp/camel-filename-out/</code></p>
+</div>
+<div class="listingblock">
+<div class="title">setup camel header to change output filename in pattern: <code>uuid-changed.txt</code></div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Configuration</span>
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ChangeFilenameHeaderCamelConfig</span> {
+
+  <span class="annotation">@Bean</span>
+  <span class="directive">public</span> RouteBuilder filenameHeaderRoute() {
+    <span class="keyword">return</span> <span class="keyword">new</span> RouteBuilder() {
+      <span class="annotation">@Override</span>
+      <span class="directive">public</span> <span class="type">void</span> configure() <span class="directive">throws</span> <span class="exception">Exception</span> {
+        from(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-filename-in</span><span class="delimiter">&quot;</span></span>)
+            .routeId(<span class="string"><span class="delimiter">&quot;</span><span class="content">change-filename-header</span><span class="delimiter">&quot;</span></span>)
+            .setHeader(<span class="string"><span class="delimiter">&quot;</span><span class="content">CamelFileName</span><span class="delimiter">&quot;</span></span>, () -&gt; format(<span class="string"><span class="delimiter">&quot;</span><span class="content">%s-changed.txt</span><span class="delimiter">&quot;</span></span>, <span class="predefined-type">UUID</span>.randomUUID().toString()))
+            .to(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-filename-out</span><span class="delimiter">&quot;</span></span>);
+      }
+    };
+  }
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -751,7 +781,7 @@ destination directory: <code>/tmp/camel-jms-out/</code></p>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-06-14 22:25:37 UTC
+Last updated 2018-06-14 22:36:00 UTC
 </div>
 </div>
 </body>
