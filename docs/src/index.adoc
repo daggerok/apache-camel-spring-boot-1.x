@@ -90,6 +90,17 @@ destination directory: `/tmp/camel-exchange-out/`
 include::../../src/main/java/daggerok/app/ExchangeProcessorCamelConfig.java[tags=process-exchange]
 ----
 
+=== easier exchange
+
+source directory: `/tmp/camel-easier-exchange-in/`
+destination directory: `/tmp/camel-easier-exchange-out/`
+
+.same, but easier:
+[source,java]
+----
+include::../../src/main/java/daggerok/app/EasierExchangeProcessorCamelConfig.java[tags=easier-exchange]
+----
+
 == BOM
 
 .maven

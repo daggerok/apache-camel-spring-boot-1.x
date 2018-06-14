@@ -25,7 +25,7 @@ public class ExchangeProcessorCamelConfig {
             .process().exchange(exchange -> {
               final Message inputMessage = exchange.getIn();
               final Object body = inputMessage.getBody(String.class);
-              log.info("handling message body in exchange consumer:\n{}", body);
+              log.info("handling message body in exchange consumer: {}", body);
             })
             .to("file:///tmp/camel-exchange-out");
       }
