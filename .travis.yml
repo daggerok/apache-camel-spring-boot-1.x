@@ -1,5 +1,5 @@
-service:
-- docker
+#service:
+#- docker
 
 env:
   global:
@@ -17,12 +17,13 @@ apt:
   - curl
   - jq
   - libxml2-utils
-  - docker-ce
+#  - docker-ce
   - python-pip
 
 install: true
 before_script:
 - sudo pip install httpie >/dev/null 2>&1
+#- sudo pip install docker-compose httpie >/dev/null 2>&1
 - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
 - stop_any 8080 80 8080 80
 
