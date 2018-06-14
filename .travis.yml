@@ -1,6 +1,3 @@
-service:
-- docker
-
 env:
   global:
   - TERM=dumb
@@ -18,7 +15,6 @@ apt:
   - jq
   - libxml2-utils
   - python-pip
-  - docker-ce
 
 install: true
 before_script:
@@ -55,14 +51,14 @@ script:
 - ls /tmp/camel-out/
 - rm /tmp/camel-out/*
 #
-# docker tests not properly working in travis (try dind if you really need it)
-- bash gradlew composeUp
-- create_some_files
-- CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
-- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-gradle
-- bash gradlew composeDown
-- stop_any 8080 80 8080 80
-- ls /tmp/*
+## docker tests not properly working in travis (try dind if you really need it)
+#- bash gradlew composeUp
+#- create_some_files
+#- CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
+#- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-gradle
+#- bash gradlew composeDown
+#- stop_any 8080 80 8080 80
+#- ls /tmp/*
 #
 - bash mvnw >/dev/null
 - java -jar ./target/*.jar &
@@ -79,14 +75,15 @@ script:
 - ls /tmp/camel-out/
 - rm /tmp/camel-out/*
 #
-- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up -P docker -Ddetails=true
-- sleep 30
-- create_some_files
-- CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
-- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-maven
-- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
-- stop_any 8080 80 8080 80
-- ls /tmp/*
+## docker tests not properly working in travis (try dind if you really need it)
+#- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up -P docker -Ddetails=true
+#- sleep 30
+#- create_some_files
+#- CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
+#- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-maven
+#- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
+#- stop_any 8080 80 8080 80
+#- ls /tmp/*
 
 before_deploy: ./gradlew documentation
 
