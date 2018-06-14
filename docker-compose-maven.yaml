@@ -9,8 +9,8 @@ services:
     volumes:
     - "/tmp/camel-in:/tmp/camel-in:rw"
     - "/tmp/camel-out:/tmp/camel-out:rw"
-    - "/tmp/camel-in:/tmp/camel-jms-in:rw"
-    - "/tmp/camel-in:/tmp/camel-jms-out:rw"
+    - "/tmp/camel-jms-in:/tmp/camel-jms-in:rw"
+    - "/tmp/camel-jms-out:/tmp/camel-jms-out:rw"
     ports: ["8080:8080"]
     networks: [backing-services]
     restart: unless-stopped
