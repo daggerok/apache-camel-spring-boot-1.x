@@ -104,9 +104,10 @@ include::../../src/main/java/daggerok/app/EasierExchangeProcessorCamelConfig.jav
 === choice
 
 source directory: `/tmp/camel-choice-in/`
+error directory: `/tmp/camel-choice-error/`
 destination directory: `/tmp/camel-choice-out/`
 
-.choice-when-<action>-endChoice
+.choice-when-<when-action>-otherwise-<otherwise-action>-endChoice
 [source,java]
 ----
 include::../../src/main/java/daggerok/app/ChoiceCamelConfig.java[tags=choice]
