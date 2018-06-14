@@ -25,13 +25,13 @@ before_script:
 script:
 - |
   function create_some_files {
-    echo "easy trololo" >> camel-easier-exchange-in/"${RANDOM}.txt"
-    echo "easy ololo" >> camel-easier-exchange-in/"${RANDOM}.txt"
-    echo "easy baby" >> camel-easier-exchange-in/"${RANDOM}.txt"
+    echo "easy trololo" >> /tmp/camel-easier-exchange-in/"${RANDOM}.txt"
+    echo "easy ololo" >> /tmp/camel-easier-exchange-in/"${RANDOM}.txt"
+    echo "easy baby" >> /tmp/camel-easier-exchange-in/"${RANDOM}.txt"
     sleep 1
-    echo "exchange" >> camel-exchange-in/"${RANDOM}.txt"
-    echo "trololo" >> camel-exchange-in/"${RANDOM}.txt"
-    echo "ololo" >> camel-exchange-in/"${RANDOM}.txt"
+    echo "exchange" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
+    echo "trololo" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
+    echo "ololo" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
     sleep 1
     echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
     echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
