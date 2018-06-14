@@ -21,13 +21,14 @@ public class ChoiceCamelConfig {
             .routeId("choice")
             .choice()
             .when(exchange -> {
-              final boolean isRandomError = Math.random() < .5;
-              log.error("we've got an error? {}", isRandomError);
-              return isRandomError;
+              final String body = exchange.getMessage().getBody(String.class);
+              return !body.toLowerCase().contains("err");
             })
+            .to("file:///tmp/camel-choice-out")
+            .otherwise()
             .to("file:///tmp/camel-choice-error")
             .endChoice()
-            .to("file:///tmp/camel-choice-out");
+        ;
       }
     };
   }

@@ -1,3 +1,6 @@
+service:
+- docker
+
 env:
   global:
   - TERM=dumb
@@ -14,6 +17,7 @@ apt:
   - curl
   - jq
   - libxml2-utils
+  - docker-ce
   - python-pip
 
 install: true
@@ -24,10 +28,10 @@ before_script:
 
 script:
 - |
-  function create_some_files {
+  function testdata {
     echo "choice trololo" >> /tmp/camel-choice-in/"${RANDOM}.txt"
     echo "choice ololo" >> /tmp/camel-choice-in/"${RANDOM}.txt"
-    echo "choice baby" >> /tmp/camel-choice-in/"${RANDOM}.txt"
+    echo "choice errr" >> /tmp/camel-choice-in/"${RANDOM}.txt"
     sleep 1
     echo "easy trololo" >> /tmp/camel-easier-exchange-in/"${RANDOM}.txt"
     echo "easy ololo" >> /tmp/camel-easier-exchange-in/"${RANDOM}.txt"
@@ -55,7 +59,7 @@ script:
 - bash gradlew >/dev/null
 - java -jar ./build/libs/*.jar &
 - wait_for 8080
-- create_some_files
+- testdata
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
 - rm /tmp/camel-out/*
@@ -74,7 +78,7 @@ script:
 #
 - bash ./build/libs/*.jar &
 - wait_for 8080
-- create_some_files
+- testdata
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
 - rm /tmp/camel-out/*
@@ -91,25 +95,25 @@ script:
 - ls /tmp/camel-choice-error/
 - rm /tmp/camel-choice-error/*
 #
-## docker tests not properly working in travis (try dind if you really need it)
-#- bash gradlew composeUp
-#- create_some_files
-#- CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
-#- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-gradle
-#- docker cp ${CONTAINER_ID}:/tmp/camel-jms-out /tmp/camel-jms-gradle
-#- docker cp ${CONTAINER_ID}:/tmp/camel-filename-out /tmp/camel-filename-gradle
-#- docker cp ${CONTAINER_ID}:/tmp/camel-exchange-out /tmp/camel-exchange-gradle
-#- docker cp ${CONTAINER_ID}:/tmp/camel-easier-exchange-out /tmp/camel-easier-exchange-gradle
-#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-out /tmp/camel-choice-out-gradle
-#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-error /tmp/camel-choice-error-gradle
-#- bash gradlew composeDown
-#- stop_any 8080 80 8080 80
-#- ls /tmp/*
+# docker tests not properly working in travis (try dind if you really need it)
+- bash gradlew composeUp
+- testdata
+- CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
+- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-gradle
+- docker cp ${CONTAINER_ID}:/tmp/camel-jms-out /tmp/camel-jms-gradle
+- docker cp ${CONTAINER_ID}:/tmp/camel-filename-out /tmp/camel-filename-gradle
+- docker cp ${CONTAINER_ID}:/tmp/camel-exchange-out /tmp/camel-exchange-gradle
+- docker cp ${CONTAINER_ID}:/tmp/camel-easier-exchange-out /tmp/camel-easier-exchange-gradle
+- docker cp ${CONTAINER_ID}:/tmp/camel-choice-out /tmp/camel-choice-out-gradle
+- docker cp ${CONTAINER_ID}:/tmp/camel-choice-error /tmp/camel-choice-error-gradle
+- bash gradlew composeDown
+- stop_any 8080 80 8080 80
+- ls /tmp/*
 #
 - bash mvnw >/dev/null
 - java -jar ./target/*.jar &
 - wait_for 8080
-- create_some_files
+- testdata
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
 - rm /tmp/camel-out/*
@@ -128,7 +132,7 @@ script:
 #
 - bash ./target/*.jar &
 - wait_for 8080
-- create_some_files
+- testdata
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
 - rm /tmp/camel-out/*
@@ -145,21 +149,21 @@ script:
 - ls /tmp/camel-choice-error/
 - rm /tmp/camel-choice-error/*
 #
-## docker tests not properly working in travis (try dind if you really need it)
-#- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up -P docker -Ddetails=true
-#- sleep 30
-#- create_some_files
-#- CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
-#- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-maven
-#- docker cp ${CONTAINER_ID}:/tmp/camel-jms-out /tmp/camel-jms-maven
-#- docker cp ${CONTAINER_ID}:/tmp/camel-filename-out /tmp/camel-filename-maven
-#- docker cp ${CONTAINER_ID}:/tmp/camel-exchange-out /tmp/camel-exchange-maven
-#- docker cp ${CONTAINER_ID}:/tmp/camel-easier-exchange-out /tmp/camel-easier-exchange-maven
-#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-out /tmp/camel-choice-out-gradle
-#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-error /tmp/camel-choice-error-gradle
-#- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
-#- stop_any 8080 80 8080 80
-#- ls /tmp/*
+# docker tests not properly working in travis (try dind if you really need it)
+- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up -P docker -Ddetails=true
+- sleep 30
+- testdata
+- CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
+- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-maven
+- docker cp ${CONTAINER_ID}:/tmp/camel-jms-out /tmp/camel-jms-maven
+- docker cp ${CONTAINER_ID}:/tmp/camel-filename-out /tmp/camel-filename-maven
+- docker cp ${CONTAINER_ID}:/tmp/camel-exchange-out /tmp/camel-exchange-maven
+- docker cp ${CONTAINER_ID}:/tmp/camel-easier-exchange-out /tmp/camel-easier-exchange-maven
+- docker cp ${CONTAINER_ID}:/tmp/camel-choice-out /tmp/camel-choice-out-gradle
+- docker cp ${CONTAINER_ID}:/tmp/camel-choice-error /tmp/camel-choice-error-gradle
+- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
+- stop_any 8080 80 8080 80
+- ls /tmp/*
 
 before_deploy: ./gradlew documentation
 
