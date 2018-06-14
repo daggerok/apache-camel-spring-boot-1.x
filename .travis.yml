@@ -45,44 +45,47 @@ script:
 - create_some_files
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
-- rm /tmp/camel-out/*.txt
+- rm /tmp/camel-out/*
 #
 - bash ./build/libs/*.jar &
 - wait_for 8080
 - create_some_files
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
-- rm /tmp/camel-out/*.txt
-#
+- rm /tmp/camel-out/*
+# docker tests not properly working in travis (try dind if you really need it)
 - bash gradlew composeUp
 - create_some_files
+- docker cp apache-camel-spring-boot-1x_gradle-apache-camel-spring-boot-1-x-app_1:/tmp/camel-out /tmp
+- ls /tmp/camel-out/
 - bash gradlew composeDown
 - stop_any 8080 80 8080 80
-- ls /tmp/camel-out/
-- rm /tmp/camel-out/*.txt
+- rm /tmp/camel-out/*
 #
 - bash mvnw >/dev/null
 - java -jar ./target/*.jar &
 - wait_for 8080
 - create_some_files
+- docker cp apache-camel-spring-boot-1x_gradle-apache-camel-spring-boot-1-x-app_1:/tmp/camel-out /tmp
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
-- rm /tmp/camel-out/*.txt
+- rm /tmp/camel-out/*
 #
 - bash ./target/*.jar &
 - wait_for 8080
 - create_some_files
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
-- rm /tmp/camel-out/*.txt
+- rm /tmp/camel-out/*
 #
 - bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up -P docker -Ddetails=true
 - sleep 30
 - create_some_files
+- docker cp apache-camel-spring-boot-1x_maven-apache-camel-spring-boot-1-x-app_1:/tmp/camel-out /tmp
 - bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
-- rm /tmp/camel-out/*.txt
+- rm /tmp/camel-out/*
 
 before_deploy: ./gradlew documentation
 
