@@ -79,6 +79,17 @@ destination directory: `/tmp/camel-filename-out/`
 include::../../src/main/java/daggerok/app/ChangeFilenameHeaderCamelConfig.java[tags=change-filename-header]
 ----
 
+=== process exchange
+
+source directory: `/tmp/camel-exchange-in/`
+destination directory: `/tmp/camel-exchange-out/`
+
+.man in a middle: do additional stuff with message during camel pipeline (for instance, log message body):
+[source,java]
+----
+include::../../src/main/java/daggerok/app/ExchangeProcessorCamelConfig.java[tags=process-exchange]
+----
+
 == BOM
 
 .maven

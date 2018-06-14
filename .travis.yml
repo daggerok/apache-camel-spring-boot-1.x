@@ -25,6 +25,10 @@ before_script:
 script:
 - |
   function create_some_files {
+    echo "" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
+    echo "" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
+    echo "" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
+    sleep 1
     echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
     echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
     echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
@@ -51,6 +55,8 @@ script:
 - rm /tmp/camel-jms-out/*
 - ls /tmp/camel-filename-out/
 - rm /tmp/camel-filename-out/*
+- ls /tmp/camel-exchange-out/
+- rm /tmp/camel-exchange-out/*
 #
 - bash ./build/libs/*.jar &
 - wait_for 8080
@@ -62,6 +68,8 @@ script:
 - rm /tmp/camel-jms-out/*
 - ls /tmp/camel-filename-out/
 - rm /tmp/camel-filename-out/*
+- ls /tmp/camel-exchange-out/
+- rm /tmp/camel-exchange-out/*
 #
 ## docker tests not properly working in travis (try dind if you really need it)
 #- bash gradlew composeUp
@@ -70,6 +78,7 @@ script:
 #- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-gradle
 #- docker cp ${CONTAINER_ID}:/tmp/camel-jms-out /tmp/camel-jms-gradle
 #- docker cp ${CONTAINER_ID}:/tmp/camel-filename-out /tmp/camel-filename-gradle
+#- docker cp ${CONTAINER_ID}:/tmp/camel-exchange-out /tmp/camel-exchange-gradle
 #- bash gradlew composeDown
 #- stop_any 8080 80 8080 80
 #- ls /tmp/*
@@ -85,6 +94,8 @@ script:
 - rm /tmp/camel-jms-out/*
 - ls /tmp/camel-filename-out/
 - rm /tmp/camel-filename-out/*
+- ls /tmp/camel-exchange-out/
+- rm /tmp/camel-exchange-out/*
 #
 - bash ./target/*.jar &
 - wait_for 8080
@@ -96,6 +107,8 @@ script:
 - rm /tmp/camel-jms-out/*
 - ls /tmp/camel-filename-out/
 - rm /tmp/camel-filename-out/*
+- ls /tmp/camel-exchange-out/
+- rm /tmp/camel-exchange-out/*
 #
 ## docker tests not properly working in travis (try dind if you really need it)
 #- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up -P docker -Ddetails=true
@@ -105,6 +118,7 @@ script:
 #- docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-maven
 #- docker cp ${CONTAINER_ID}:/tmp/camel-jms-out /tmp/camel-jms-maven
 #- docker cp ${CONTAINER_ID}:/tmp/camel-filename-out /tmp/camel-filename-maven
+#- docker cp ${CONTAINER_ID}:/tmp/camel-exchange-out /tmp/camel-exchange-maven
 #- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
 #- stop_any 8080 80 8080 80
 #- ls /tmp/*
