@@ -27,44 +27,64 @@ before_script:
 - stop_any 8080 80 8080 80
 
 script:
+- |
+  function create_some_files {
+    echo "" >> /tmp/camel-in/"${RANDOM}.txt"
+    echo "" >> /tmp/camel-in/"${RANDOM}.txt"
+    echo "" >> /tmp/camel-in/"${RANDOM}.txt"
+    echo "" >> /tmp/camel-in/"${RANDOM}.txt"
+    echo "" >> /tmp/camel-in/"${RANDOM}.txt"
+    echo "" >> /tmp/camel-in/"${RANDOM}.txt"
+    sleep 2
+    return 0
+  }
+#
 - bash gradlew >/dev/null
 - java -jar ./build/libs/*.jar &
 - wait_for 8080
-- http :8080
-- sleep 1
+- create_some_files
 - stop_any 8080 80 8080 80
+- ls /tmp/camel-out/
+- rm /tmp/camel-out/*.txt
 #
 - bash ./build/libs/*.jar &
 - wait_for 8080
-- http :8080
-- sleep 1
+- create_some_files
 - stop_any 8080 80 8080 80
+- ls /tmp/camel-out/
+- rm /tmp/camel-out/*.txt
 #
 - bash gradlew composeUp
 - http :8080
-- sleep 1
+- create_some_files
 - bash gradlew composeDown
 - stop_any 8080 80 8080 80
+- ls /tmp/camel-out/
+- rm /tmp/camel-out/*.txt
 #
 - bash mvnw >/dev/null
 - java -jar ./target/*.jar &
 - wait_for 8080
-- http :8080
-- sleep 1
+- create_some_files
 - stop_any 8080 80 8080 80
+- ls /tmp/camel-out/
+- rm /tmp/camel-out/*.txt
 #
 - bash ./target/*.jar &
 - wait_for 8080
-- http :8080
-- sleep 1
+- create_some_files
 - stop_any 8080 80 8080 80
+- ls /tmp/camel-out/
+- rm /tmp/camel-out/*.txt
 #
 - bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up -P docker
 - sleep 25
 - http :8080
-- sleep 1
+- create_some_files
 - bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
 - stop_any 8080 80 8080 80
+- ls /tmp/camel-out/
+- rm /tmp/camel-out/*.txt
 
 before_deploy: ./gradlew documentation
 

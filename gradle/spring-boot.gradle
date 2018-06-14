@@ -5,9 +5,11 @@ apply plugin: 'io.spring.dependency-management'
 compileJava.dependsOn(processResources)
 
 dependencies {
-  compile('org.apache.camel:camel-spring-boot-starter')
-  compile('org.springframework.boot:spring-boot-starter-activemq')
   compile('org.springframework.boot:spring-boot-starter-integration')
+  compile('org.springframework.boot:spring-boot-starter-activemq')
+  compile('org.apache.camel:camel-spring-boot-starter')
+  compile('org.apache.camel:camel-jms-starter')
+  //
   compile('org.springframework.boot:spring-boot-starter-web')
   compile('org.springframework.boot:spring-boot-starter-actuator')
   runtime('org.springframework.boot:spring-boot-devtools')

@@ -6,14 +6,12 @@ services:
     build:
       context: .
       dockerfile: gradle/Dockerfile
-    volumes: ["gradle-apache-camel-spring-boot-1-x-app-data:/home/appuser"]
+    volumes:
+    - "/tmp/camel-in:/tmp/camel-in:rw"
+    - "/tmp/camel-out:/tmp/camel-out:rw"
     ports: ["8080:8080"]
     networks: [backing-services]
-    #restart: unless-stopped
-    #mem_limit: 786432000 # container limit: 700Mb (700 * 1024 * 1024)
-
-volumes:
-  gradle-apache-camel-spring-boot-1-x-app-data: {}
+    restart: unless-stopped
 
 networks:
   backing-services:
