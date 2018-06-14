@@ -559,7 +559,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2018-06-14 22:39:30 UTC</span>
+<span id="revdate">2018-06-14 22:54:39 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -571,6 +571,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#move-all-files-from-directory">2.2. move all files from directory</a></li>
 <li><a href="#move-files-via-jms">2.3. move files via jms</a></li>
 <li><a href="#change-filename-by-using-camel-header">2.4. change filename by using camel header</a></li>
+<li><a href="#process-exchange">2.5. process exchange</a></li>
 </ul>
 </li>
 <li><a href="#bom">3. BOM</a></li>
@@ -735,6 +736,39 @@ destination directory: <code>/tmp/camel-filename-out/</code></p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="process-exchange"><a class="anchor" href="#process-exchange"></a>2.5. process exchange</h3>
+<div class="paragraph">
+<p>source directory: <code>/tmp/camel-exchange-in/</code>
+destination directory: <code>/tmp/camel-exchange-out/</code></p>
+</div>
+<div class="listingblock">
+<div class="title">man in a middle: do additional stuff with message during camel pipeline (for instance, log message body):</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Configuration</span>
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ExchangeProcessorCamelConfig</span> {
+
+  <span class="annotation">@Bean</span>
+  <span class="directive">public</span> RouteBuilder processExchangeRoute() {
+    <span class="keyword">return</span> <span class="keyword">new</span> RouteBuilder() {
+      <span class="annotation">@Override</span>
+      <span class="directive">public</span> <span class="type">void</span> configure() <span class="directive">throws</span> <span class="exception">Exception</span> {
+        from(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-exchange-in</span><span class="delimiter">&quot;</span></span>)
+            .routeId(<span class="string"><span class="delimiter">&quot;</span><span class="content">exchange-processor</span><span class="delimiter">&quot;</span></span>)
+            .process().exchange(exchange -&gt; {
+              <span class="directive">final</span> Message message = exchange.getMessage();
+              <span class="directive">final</span> <span class="predefined-type">Object</span> body = message.getBody();
+              log.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">handling message body in exchange consumer: {}</span><span class="delimiter">&quot;</span></span>, body);
+            })
+            .to(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-exchange-out</span><span class="delimiter">&quot;</span></span>);
+      }
+    };
+  }
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -781,7 +815,7 @@ destination directory: <code>/tmp/camel-filename-out/</code></p>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-06-14 22:39:30 UTC
+Last updated 2018-06-14 22:54:39 UTC
 </div>
 </div>
 </body>
