@@ -559,7 +559,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2018-06-14 20:07:22 UTC</span>
+<span id="revdate">2018-06-14 20:19:05 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -620,10 +620,7 @@ bash target/*.jar</code></pre>
 <div class="listingblock">
 <div class="title">src/main/resources/application.properties</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="properties">spring.profiles.include[0]=spring-boot
-#tag::content[]
-camel.springboot.main-run-controller=true
-#end::content[]</code></pre>
+<pre class="CodeRay highlight"><code data-lang="properties">camel.springboot.main-run-controller=true</code></pre>
 </div>
 </div>
 </div>
@@ -636,15 +633,7 @@ destination directory: <code>/tmp/camel-out/</code></p>
 <div class="listingblock">
 <div class="title">src/main/java/daggerok/app/MoveFilesCamelConfig.java</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">package</span> <span class="namespace">daggerok.app</span>;
-
-<span class="keyword">import</span> <span class="include">lombok.RequiredArgsConstructor</span>;
-<span class="keyword">import</span> <span class="include">org.apache.camel.builder.RouteBuilder</span>;
-<span class="keyword">import</span> <span class="include">org.springframework.context.annotation.Bean</span>;
-<span class="keyword">import</span> <span class="include">org.springframework.context.annotation.Configuration</span>;
-
-<span class="comment">//tag::content[]</span>
-<span class="annotation">@Configuration</span>
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Configuration</span>
 <span class="annotation">@RequiredArgsConstructor</span>
 <span class="directive">public</span> <span class="type">class</span> <span class="class">MoveFilesCamelConfig</span> {
 
@@ -658,8 +647,7 @@ destination directory: <code>/tmp/camel-out/</code></p>
       }
     };
   }
-}
-<span class="comment">//end::content[]</span></code></pre>
+}</code></pre>
 </div>
 </div>
 </div>
@@ -709,7 +697,7 @@ destination directory: <code>/tmp/camel-out/</code></p>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-06-14 20:07:22 UTC
+Last updated 2018-06-14 20:19:05 UTC
 </div>
 </div>
 </body>
