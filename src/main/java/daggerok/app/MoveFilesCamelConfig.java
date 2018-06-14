@@ -5,7 +5,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//tag::content[]
+//tag::move-files[]
 @Configuration
 @RequiredArgsConstructor
 public class MoveFilesCamelConfig {
@@ -21,4 +21,4 @@ public class MoveFilesCamelConfig {
     };
   }
 }
-//end::content[]
+//end::move-files[]

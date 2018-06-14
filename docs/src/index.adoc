@@ -36,7 +36,7 @@ include::../../README.adoc[tags=content]
 .src/main/resources/application.properties
 [source,properties]
 ----
-include::../../src/main/resources/application.properties[content]
+include::../../src/main/resources/application.properties[tags=content]
 ----
 
 === move all files from directory
@@ -47,7 +47,7 @@ destination directory: `/tmp/camel-out/`
 .src/main/java/daggerok/app/MoveFilesCamelConfig.java
 [source,java]
 ----
-include::../../src/main/java/daggerok/app/MoveFilesCamelConfig.java[content]
+include::../../src/main/java/daggerok/app/MoveFilesCamelConfig.java[tags=move-files]
 ----
 
 == BOM
