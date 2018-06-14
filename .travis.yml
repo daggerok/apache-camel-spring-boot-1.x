@@ -32,10 +32,11 @@ script:
     echo "" >> /tmp/camel-in/"${RANDOM}.txt"
     echo "" >> /tmp/camel-in/"${RANDOM}.txt"
     echo "" >> /tmp/camel-in/"${RANDOM}.txt"
+    sleep 1
     echo "" >> /tmp/camel-in/"${RANDOM}.txt"
     echo "" >> /tmp/camel-in/"${RANDOM}.txt"
     echo "" >> /tmp/camel-in/"${RANDOM}.txt"
-    sleep 2
+    sleep 1
     return 0
   }
 #
