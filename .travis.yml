@@ -25,9 +25,9 @@ before_script:
 script:
 - |
   function create_some_files {
-    echo "" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
-    echo "" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
-    echo "" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
+    echo "ololo" >> camel-exchange-in/"${RANDOM}.txt"
+    echo "trololo" >> camel-exchange-in/"${RANDOM}.txt"
+    echo "exchange" >> camel-exchange-in/"${RANDOM}.txt"
     sleep 1
     echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
     echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
