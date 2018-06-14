@@ -11,11 +11,12 @@ import org.springframework.context.annotation.Configuration;
 public class MoveFilesCamelConfig {
 
   @Bean
-  public RouteBuilder copyDirectoryRoute() {
+  public RouteBuilder moveFilesRoute() {
     return new RouteBuilder() {
       @Override
       public void configure() throws Exception {
         from("file:///tmp/camel-in")
+            .routeId("dir-to-dir")
             .to("file:///tmp/camel-out");
       }
     };

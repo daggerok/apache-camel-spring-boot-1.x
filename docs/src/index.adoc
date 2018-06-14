@@ -50,6 +50,24 @@ destination directory: `/tmp/camel-out/`
 include::../../src/main/java/daggerok/app/MoveFilesCamelConfig.java[tags=move-files]
 ----
 
+=== move files via jms
+
+source directory: `/tmp/camel-in-jms/`
+process queue: `files`
+destination directory: `/tmp/camel-jms-out/`
+
+.move files via jms queue `jms:queue:files`
+[source,java]
+----
+include::../../src/main/java/daggerok/app/MoveFilesViaJmsCamelConfig.java[tags=move-files-via-jms]
+----
+
+.jms component customizer
+[source,java]
+----
+include::../../src/main/java/daggerok/app/MoveFilesViaJmsCamelConfig.java[tags=jms-component-customizer]
+----
+
 == BOM
 
 .maven

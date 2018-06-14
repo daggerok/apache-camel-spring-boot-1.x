@@ -22,13 +22,14 @@ public class MoveFilesCamelConfigGarbage {
   }
 
   @Bean
-  public RouteBuilder copyDirectoryRoute() {
+  public RouteBuilder garbageMoveFilesRoute() {
     return new RouteBuilder() {
       @Override
       public void configure() throws Exception {
         //from("my-jms-component:queue:my-queue")
-        from("file:///tmp/camel-in")
-            .to("file:///tmp/camel-out");
+        from("file:///tmp/garbage-camel-in")
+            .routeId("garbage-dir-to-dir")
+            .to("file:///tmp/garbage-camel-out");
       }
     };
   }
