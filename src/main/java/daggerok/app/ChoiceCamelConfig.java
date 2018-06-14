@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class ChoiceCamelConfig {
 
   @Bean
-  public RouteBuilder moveFilesRoute() {
+  public RouteBuilder choiceRoute() {
     return new RouteBuilder() {
       @Override
       public void configure() throws Exception {
