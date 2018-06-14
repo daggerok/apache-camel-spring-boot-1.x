@@ -101,6 +101,17 @@ destination directory: `/tmp/camel-easier-exchange-out/`
 include::../../src/main/java/daggerok/app/EasierExchangeProcessorCamelConfig.java[tags=easier-exchange]
 ----
 
+=== choice
+
+source directory: `/tmp/camel-choice-in/`
+destination directory: `/tmp/camel-choice-out/`
+
+.choice-when-<action>-endChoice
+[source,java]
+----
+include::../../src/main/java/daggerok/app/ChoiceCamelConfig.java[tags=choice]
+----
+
 == BOM
 
 .maven

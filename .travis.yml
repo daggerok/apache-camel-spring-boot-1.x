@@ -25,6 +25,10 @@ before_script:
 script:
 - |
   function create_some_files {
+    echo "choice trololo" >> /tmp/camel-choice-in/"${RANDOM}.txt"
+    echo "choice ololo" >> /tmp/camel-choice-in/"${RANDOM}.txt"
+    echo "choice baby" >> /tmp/camel-choice-in/"${RANDOM}.txt"
+    sleep 1
     echo "easy trololo" >> /tmp/camel-easier-exchange-in/"${RANDOM}.txt"
     echo "easy ololo" >> /tmp/camel-easier-exchange-in/"${RANDOM}.txt"
     echo "easy baby" >> /tmp/camel-easier-exchange-in/"${RANDOM}.txt"
@@ -33,13 +37,13 @@ script:
     echo "trololo" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
     echo "ololo" >> /tmp/camel-exchange-in/"${RANDOM}.txt"
     sleep 1
-    echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
-    echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
-    echo "" >> /tmp/camel-filename-in/"${RANDOM}.txt"
+    echo "filename" >> /tmp/camel-filename-in/"${RANDOM}.txt"
+    echo "filename" >> /tmp/camel-filename-in/"${RANDOM}.txt"
+    echo "filename" >> /tmp/camel-filename-in/"${RANDOM}.txt"
     sleep 1
-    echo "" >> /tmp/camel-jms-in/"${RANDOM}.txt"
-    echo "" >> /tmp/camel-jms-in/"${RANDOM}.txt"
-    echo "" >> /tmp/camel-jms-in/"${RANDOM}.txt"
+    echo "jms" >> /tmp/camel-jms-in/"${RANDOM}.txt"
+    echo "jms" >> /tmp/camel-jms-in/"${RANDOM}.txt"
+    echo "jms" >> /tmp/camel-jms-in/"${RANDOM}.txt"
     sleep 1
     echo "" >> /tmp/camel-in/"${RANDOM}.txt"
     echo "" >> /tmp/camel-in/"${RANDOM}.txt"
@@ -63,6 +67,10 @@ script:
 - rm /tmp/camel-exchange-out/*
 - ls /tmp/camel-easier-exchange-out/
 - rm /tmp/camel-easier-exchange-out/*
+- ls /tmp/camel-choice-out/
+- rm /tmp/camel-choice-out/*
+- ls /tmp/camel-choice-error/
+- rm /tmp/camel-choice-error/*
 #
 - bash ./build/libs/*.jar &
 - wait_for 8080
@@ -78,6 +86,10 @@ script:
 - rm /tmp/camel-exchange-out/*
 - ls /tmp/camel-easier-exchange-out/
 - rm /tmp/camel-easier-exchange-out/*
+- ls /tmp/camel-choice-out/
+- rm /tmp/camel-choice-out/*
+- ls /tmp/camel-choice-error/
+- rm /tmp/camel-choice-error/*
 #
 ## docker tests not properly working in travis (try dind if you really need it)
 #- bash gradlew composeUp
@@ -88,6 +100,8 @@ script:
 #- docker cp ${CONTAINER_ID}:/tmp/camel-filename-out /tmp/camel-filename-gradle
 #- docker cp ${CONTAINER_ID}:/tmp/camel-exchange-out /tmp/camel-exchange-gradle
 #- docker cp ${CONTAINER_ID}:/tmp/camel-easier-exchange-out /tmp/camel-easier-exchange-gradle
+#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-out /tmp/camel-choice-out-gradle
+#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-error /tmp/camel-choice-error-gradle
 #- bash gradlew composeDown
 #- stop_any 8080 80 8080 80
 #- ls /tmp/*
@@ -107,6 +121,10 @@ script:
 - rm /tmp/camel-exchange-out/*
 - ls /tmp/camel-easier-exchange-out/
 - rm /tmp/camel-easier-exchange-out/*
+- ls /tmp/camel-choice-out/
+- rm /tmp/camel-choice-out/*
+- ls /tmp/camel-choice-error/
+- rm /tmp/camel-choice-error/*
 #
 - bash ./target/*.jar &
 - wait_for 8080
@@ -122,6 +140,10 @@ script:
 - rm /tmp/camel-exchange-out/*
 - ls /tmp/camel-easier-exchange-out/
 - rm /tmp/camel-easier-exchange-out/*
+- ls /tmp/camel-choice-out/
+- rm /tmp/camel-choice-out/*
+- ls /tmp/camel-choice-error/
+- rm /tmp/camel-choice-error/*
 #
 ## docker tests not properly working in travis (try dind if you really need it)
 #- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up -P docker -Ddetails=true
@@ -133,6 +155,8 @@ script:
 #- docker cp ${CONTAINER_ID}:/tmp/camel-filename-out /tmp/camel-filename-maven
 #- docker cp ${CONTAINER_ID}:/tmp/camel-exchange-out /tmp/camel-exchange-maven
 #- docker cp ${CONTAINER_ID}:/tmp/camel-easier-exchange-out /tmp/camel-easier-exchange-maven
+#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-out /tmp/camel-choice-out-gradle
+#- docker cp ${CONTAINER_ID}:/tmp/camel-choice-error /tmp/camel-choice-error-gradle
 #- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
 #- stop_any 8080 80 8080 80
 #- ls /tmp/*

@@ -13,10 +13,13 @@ services:
     - "/tmp/camel-jms-out:/tmp/camel-jms-out:rw"
     - "/tmp/camel-filename-in:/tmp/camel-filename-in:rw"
     - "/tmp/camel-filename-out:/tmp/camel-filename-out:rw"
-    - "/tmp/camel-filename-in:/tmp/camel-exchange-in:rw"
-    - "/tmp/camel-filename-out:/tmp/camel-exchange-out:rw"
-    - "/tmp/camel-filename-in:/tmp/camel-easier-exchange-in:rw"
-    - "/tmp/camel-filename-out:/tmp/camel-easier-exchange-out:rw"
+    - "/tmp/camel-exchange-in:/tmp/camel-exchange-in:rw"
+    - "/tmp/camel-exchange-out:/tmp/camel-exchange-out:rw"
+    - "/tmp/camel-easier-exchange-in:/tmp/camel-easier-exchange-in:rw"
+    - "/tmp/camel-easier-exchange-out:/tmp/camel-easier-exchange-out:rw"
+    - "/tmp/camel-choice-in:/tmp/camel-choice-in:rw"
+    - "/tmp/camel-choice-out:/tmp/camel-choice-out:rw"
+    - "/tmp/camel-choice-error:/tmp/camel-choice-error:rw"
     ports: ["8080:8080"]
     networks: [backing-services]
     restart: unless-stopped
