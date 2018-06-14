@@ -52,7 +52,7 @@ include::../../src/main/java/daggerok/app/MoveFilesCamelConfig.java[tags=move-fi
 
 === move files via jms
 
-source directory: `/tmp/camel-in-jms/`
+source directory: `/tmp/camel-jms-in/`
 process queue: `files`
 destination directory: `/tmp/camel-jms-out/`
 
@@ -66,6 +66,17 @@ include::../../src/main/java/daggerok/app/MoveFilesViaJmsCamelConfig.java[tags=m
 [source,java]
 ----
 include::../../src/main/java/daggerok/app/MoveFilesViaJmsCamelConfig.java[tags=jms-component-customizer]
+----
+
+=== change filename by using camel header
+
+source directory: `/tmp/camel-filename-in/`
+destination directory: `/tmp/camel-filename-out/`
+
+.setup camel header to change output filename in pattern: `uuid-changed.txt`
+[source,java]
+----
+include::../../src/main/java/daggerok/app/ChangeFilenameHeaderCamelConfig.java[tags=change-filename-header]
 ----
 
 == BOM

@@ -11,6 +11,8 @@ services:
     - "/tmp/camel-out:/tmp/camel-out:rw"
     - "/tmp/camel-jms-in:/tmp/camel-jms-in:rw"
     - "/tmp/camel-jms-out:/tmp/camel-jms-out:rw"
+    - "/tmp/camel-filename-in:/tmp/camel-filename-in:rw"
+    - "/tmp/camel-filename-out:/tmp/camel-filename-out:rw"
     ports: ["8080:8080"]
     networks: [backing-services]
     restart: unless-stopped
