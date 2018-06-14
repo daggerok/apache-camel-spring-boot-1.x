@@ -53,15 +53,15 @@ script:
 - stop_any 8080 80 8080 80
 - ls /tmp/camel-out/
 - rm /tmp/camel-out/*
+#
 # docker tests not properly working in travis (try dind if you really need it)
 - bash gradlew composeUp
 - create_some_files
 - CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
 - docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-gradle
-- ls /tmp/camel-gradle
+- ls /tmp/*
 - bash gradlew composeDown
 - stop_any 8080 80 8080 80
-- rm /tmp/camel-out/*
 #
 - bash mvnw >/dev/null
 - java -jar ./target/*.jar &
@@ -83,9 +83,9 @@ script:
 - create_some_files
 - CONTAINER_ID=$(docker ps|awk '{print $1}'|grep -v CONTAINER)
 - docker cp ${CONTAINER_ID}:/tmp/camel-out /tmp/camel-maven
+- ls /tmp/*
 - bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
 - stop_any 8080 80 8080 80
-- ls /tmp/camel-maven/
 
 before_deploy: ./gradlew documentation
 
