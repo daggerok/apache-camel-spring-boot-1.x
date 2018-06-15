@@ -20,6 +20,7 @@ services:
     - "/tmp/camel-choice-in:/tmp/camel-choice-in:rw"
     - "/tmp/camel-choice-out:/tmp/camel-choice-out:rw"
     - "/tmp/camel-choice-error:/tmp/camel-choice-error:rw"
+    - "/tmp/camel-spring-integration-in:/tmp/camel-spring-integration-in:rw"
     ports: ["8080:8080"]
     networks: [backing-services]
     restart: unless-stopped

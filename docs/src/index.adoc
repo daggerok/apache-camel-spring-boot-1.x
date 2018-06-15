@@ -204,6 +204,31 @@ http :8080/actuator/camel/routes/change-filename-header/info
 }
 ----
 
+== Spring Integration
+
+We also can integration awesome Apache Camel modules with Spring Integration
+
+input directory: `/tmp/camel-spring-integration-in/`
+
+.1. again, do not forget about required jms coniguration
+[source,groovy]
+----
+include::../../src/main/java/daggerok/app/SpringIntegrationCamelConfig.java[tags=jms-component-customizer]
+----
+
+.2. if we wanna get file content form input directory `/tmp/camel-spring-integration-in` and send it to
+spring-integration for IntegrationFlow processing, then, camel configuration might looks like so:
+[source,groovy]
+----
+include::../../src/main/java/daggerok/app/SpringIntegrationCamelConfig.java[tags=spring-integration]
+----
+
+.3. finally, spring IntegrationFlow config:
+[source,groovy]
+----
+include::../../src/main/java/daggerok/app/SpringIntegrationCamelConfig.java[tags=integration-flow-config]
+----
+
 == BOM
 
 .maven

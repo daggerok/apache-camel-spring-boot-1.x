@@ -30,6 +30,9 @@ before_script:
 script:
 - |
   function testdata {
+    echo "spring" >> /tmp/camel-spring-integration-in/"${RANDOM}.txt"
+    echo "integration" >> /tmp/camel-spring-integration-in/"${RANDOM}.txt"
+    sleep 1
     echo "choice trololo" >> /tmp/camel-choice-in/"${RANDOM}.txt"
     echo "choice ololo" >> /tmp/camel-choice-in/"${RANDOM}.txt"
     echo "choice errr" >> /tmp/camel-choice-in/"${RANDOM}.txt"

@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.joining;
 //tag::jms-component-customizer[]
 @Component
 @RequiredArgsConstructor
-class ApplicationJmsComponentCustomizer implements ComponentCustomizer<JmsComponent> {
+class MoveFilesViaJmsComponentCustomizer implements ComponentCustomizer<JmsComponent> {
 
   final ConnectionFactory connectionFactory;
 
