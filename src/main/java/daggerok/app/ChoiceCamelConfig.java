@@ -19,15 +19,14 @@ public class ChoiceCamelConfig {
       public void configure() throws Exception {
         from("file:///tmp/camel-choice-in")
             .routeId("choice")
+            //@formatter:off
             .choice()
-            .when(exchange -> {
-              final String body = exchange.getMessage().getBody(String.class);
-              return !body.toLowerCase().contains("err");
-            })
-            .to("file:///tmp/camel-choice-out")
-            .otherwise()
-            .to("file:///tmp/camel-choice-error")
+              .when(exchange -> !exchange.getMessage().getBody(String.class).toLowerCase().contains("err"))
+                .to("file:///tmp/camel-choice-out")
+              .otherwise()
+                .to("file:///tmp/camel-choice-error")
             .endChoice()
+            //@formatter:on
         ;
       }
     };
