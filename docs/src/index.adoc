@@ -118,7 +118,7 @@ include::../../src/main/java/daggerok/app/ChoiceCamelConfig.java[tags=choice]
 .get routes:
 [source,bash]
 ----
-http :8080/actuator/camel/routes
+http get :8080/actuator/camel/routes
 ----
 
 .output:
@@ -191,7 +191,7 @@ X-Application-Context: application:spring-boot,camel
 .let's check if it was stopped:
 [source,bash]
 ----
-http :8080/actuator/camel/routes/change-filename-header/info
+http get :8080/actuator/camel/routes/change-filename-header/info
 ----
 
 .output:

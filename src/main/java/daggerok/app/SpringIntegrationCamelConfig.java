@@ -54,10 +54,8 @@ class SpringIntegrationFlowConfig {
   public IntegrationFlow inputMessageFlow() {
     return IntegrationFlows
         .from(inputMessageChannel())
-        .handle((payload, headers) -> {
-          log.info("spring integration payload: {}", payload);
-          log.info("spring integration String: {}", payload.toString());
-          return null;
+        .handle(message -> {
+          log.info("integration flow: {}", message.getPayload());
         })
         .get();
   }

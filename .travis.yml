@@ -171,9 +171,9 @@ script:
 #
 - bash ./target/*.jar &
 - wait_for 8080
-- http :8080/actuator/camel/routes
+- http get  :8080/actuator/camel/routes
 - http post :8080/actuator/camel/routes/jms-to-out-dir/stop
-- http post :8080/actuator/camel/routes/jms-to-out-dir/info
+- http get  :8080/actuator/camel/routes/jms-to-out-dir/info
 - stop_any 8080 80 80 8080
 
 before_deploy: ./gradlew documentation
