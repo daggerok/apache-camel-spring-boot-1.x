@@ -165,6 +165,10 @@ script:
 #- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down -P docker
 #- stop_any 8080 80 8080 80
 #- ls /tmp/*
+#
+- http :8080/actuator/camel/routes
+- http post :8080/actuator/camel/routes/jms-to-out-dir/stop
+- http post :8080/actuator/camel/routes/jms-to-out-dir/info
 
 before_deploy: ./gradlew documentation
 
