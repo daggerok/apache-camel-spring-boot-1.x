@@ -559,7 +559,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2018-06-15 00:29:50 UTC</span>
+<span id="revdate">2018-06-15 01:10:52 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -577,8 +577,9 @@ table.CodeRay td.code>pre{padding:0}
 </ul>
 </li>
 <li><a href="#actuator">3. Actuator</a></li>
-<li><a href="#bom">4. BOM</a></li>
-<li><a href="#links">5. Links</a></li>
+<li><a href="#spring-integration">4. Spring Integration</a></li>
+<li><a href="#bom">5. BOM</a></li>
+<li><a href="#links">6. Links</a></li>
 </ul>
 </div>
 </div>
@@ -705,7 +706,7 @@ destination directory: <code>/tmp/camel-jms-out/</code></p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Component</span>
 <span class="annotation">@RequiredArgsConstructor</span>
-<span class="type">class</span> <span class="class">ApplicationJmsComponentCustomizer</span> <span class="directive">implements</span> ComponentCustomizer&lt;JmsComponent&gt; {
+<span class="type">class</span> <span class="class">MoveFilesViaJmsComponentCustomizer</span> <span class="directive">implements</span> ComponentCustomizer&lt;JmsComponent&gt; {
 
   <span class="directive">final</span> ConnectionFactory connectionFactory;
 
@@ -958,7 +959,97 @@ X-Application-Context: application:spring-boot,camel</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="bom"><a class="anchor" href="#bom"></a>4. BOM</h2>
+<h2 id="spring-integration"><a class="anchor" href="#spring-integration"></a>4. Spring Integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We also can integration awesome Apache Camel modules with Spring Integration</p>
+</div>
+<div class="paragraph">
+<p>input directory: <code>/tmp/camel-spring-integration-in/</code></p>
+</div>
+<div class="listingblock">
+<div class="title">1. again, do not forget about required jms coniguration</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Component</span>
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="type">class</span> <span class="class">SpringIntegrationJmsComponentCustomizer</span> <span class="directive">implements</span> ComponentCustomizer&lt;JmsComponent&gt; {
+
+  <span class="directive">final</span> ConnectionFactory connectionFactory;
+
+  <span class="annotation">@Override</span>
+  <span class="directive">public</span> <span class="type">void</span> customize(JmsComponent component) {
+    component.setConnectionFactory(connectionFactory);
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">2. if we wanna get file content form input directory <code>/tmp/camel-spring-integration-in</code> and send it to</div>
+<p>spring-integration for IntegrationFlow processing, then, camel configuration might looks like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Configuration</span>
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SpringIntegrationCamelConfig</span> {
+
+  <span class="annotation">@Bean</span>
+  <span class="directive">public</span> RouteBuilder springIntegrationRoute() {
+    <span class="keyword">return</span> <span class="keyword">new</span> RouteBuilder() {
+      <span class="annotation">@Override</span>
+      <span class="directive">public</span> <span class="type">void</span> configure() <span class="directive">throws</span> <span class="exception">Exception</span> {
+
+        from(<span class="string"><span class="delimiter">&quot;</span><span class="content">file:///tmp/camel-spring-integration-in</span><span class="delimiter">&quot;</span></span>)
+            .routeId(<span class="string"><span class="delimiter">&quot;</span><span class="content">to-spring-integration</span><span class="delimiter">&quot;</span></span>)
+            <span class="comment">//@formatter:off</span>
+            .transform()
+              .body(<span class="predefined-type">String</span>.class, (s, headers) -&gt; s)
+            <span class="comment">//@formatter:on</span>
+            .to(<span class="string"><span class="delimiter">&quot;</span><span class="content">jms:queue:flow</span><span class="delimiter">&quot;</span></span>)
+        ;
+
+        from(<span class="string"><span class="delimiter">&quot;</span><span class="content">jms:queue:flow</span><span class="delimiter">&quot;</span></span>)
+            .to(<span class="string"><span class="delimiter">&quot;</span><span class="content">spring-integration:inputMessageChannel</span><span class="delimiter">&quot;</span></span>)
+        ;
+      }
+    };
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">3. finally, spring IntegrationFlow config:</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="comment">/**
+ * Requires camel spring-integration-starter
+ */</span>
+<span class="annotation">@Slf4j</span>
+<span class="annotation">@Configuration</span>
+<span class="type">class</span> <span class="class">SpringIntegrationFlowConfig</span> {
+
+  <span class="annotation">@Bean</span>
+  <span class="directive">public</span> MessageChannel inputMessageChannel() {
+    <span class="keyword">return</span> MessageChannels.direct().get();
+  }
+
+  <span class="annotation">@Bean</span>
+  <span class="directive">public</span> IntegrationFlow inputMessageFlow() {
+    <span class="keyword">return</span> IntegrationFlows
+        .from(inputMessageChannel())
+        .handle((payload, headers) -&gt; {
+          log.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">spring integration payload: {}</span><span class="delimiter">&quot;</span></span>, payload);
+          log.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">spring integration String: {}</span><span class="delimiter">&quot;</span></span>, payload.toString());
+          <span class="keyword">return</span> <span class="predefined-constant">null</span>;
+        })
+        .get();
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="bom"><a class="anchor" href="#bom"></a>5. BOM</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="title">maven</div>
@@ -986,7 +1077,7 @@ X-Application-Context: application:spring-boot,camel</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="links"><a class="anchor" href="#links"></a>5. Links</h2>
+<h2 id="links"><a class="anchor" href="#links"></a>6. Links</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="./index.pdf">Documentation in PFD format</a></p>
@@ -1001,7 +1092,7 @@ X-Application-Context: application:spring-boot,camel</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-06-15 00:29:50 UTC
+Last updated 2018-06-15 01:10:52 UTC
 </div>
 </div>
 </body>
