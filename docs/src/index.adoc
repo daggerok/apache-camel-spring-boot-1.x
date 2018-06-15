@@ -250,6 +250,9 @@ ifdef::backend-html5[link:./index.pdf[Documentation in PFD format]]
 link:{github-url}[GitHub repo]
 link:https://daggerok.github.io/{root-project-name}[GitHub pages]
 
+link:https://spring.io/blog/2018/05/23/spring-tips-apache-camel[spring.io blog post]
+link:https://www.youtube.com/watch?v=-KupcZ3bA-Y[jlong youtube video]
+
 //link:{gitlab-url}[GitLab repo]
 //link:https://daggerok.gitlab.io/{root-project-name}[GitLab pages]
 //
