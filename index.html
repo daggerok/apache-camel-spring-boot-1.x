@@ -559,7 +559,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2018-06-15 01:10:52 UTC</span>
+<span id="revdate">2018-06-15 01:24:31 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -870,7 +870,7 @@ destination directory: <code>/tmp/camel-choice-out/</code></p>
 <div class="listingblock">
 <div class="title">get routes:</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">http :8080/actuator/camel/routes</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">http get :8080/actuator/camel/routes</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -943,7 +943,7 @@ X-Application-Context: application:spring-boot,camel</code></pre>
 <div class="listingblock">
 <div class="title">let&#8217;s check if it was stopped:</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">http :8080/actuator/camel/routes/change-filename-header/info</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">http get :8080/actuator/camel/routes/change-filename-header/info</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1036,10 +1036,8 @@ X-Application-Context: application:spring-boot,camel</code></pre>
   <span class="directive">public</span> IntegrationFlow inputMessageFlow() {
     <span class="keyword">return</span> IntegrationFlows
         .from(inputMessageChannel())
-        .handle((payload, headers) -&gt; {
-          log.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">spring integration payload: {}</span><span class="delimiter">&quot;</span></span>, payload);
-          log.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">spring integration String: {}</span><span class="delimiter">&quot;</span></span>, payload.toString());
-          <span class="keyword">return</span> <span class="predefined-constant">null</span>;
+        .handle(message -&gt; {
+          log.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">integration flow: {}</span><span class="delimiter">&quot;</span></span>, message.getPayload());
         })
         .get();
   }
@@ -1092,7 +1090,7 @@ X-Application-Context: application:spring-boot,camel</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-06-15 01:10:52 UTC
+Last updated 2018-06-15 01:24:31 UTC
 </div>
 </div>
 </body>
