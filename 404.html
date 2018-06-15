@@ -559,7 +559,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2018-06-14 23:54:01 UTC</span>
+<span id="revdate">2018-06-15 00:14:00 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -576,8 +576,9 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#choice">2.7. choice</a></li>
 </ul>
 </li>
-<li><a href="#bom">3. BOM</a></li>
-<li><a href="#links">4. Links</a></li>
+<li><a href="#actuator">3. Actuator</a></li>
+<li><a href="#bom">4. BOM</a></li>
+<li><a href="#links">5. Links</a></li>
 </ul>
 </div>
 </div>
@@ -610,9 +611,16 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect2">
 <h3 id="camel-spring-configuration"><a class="anchor" href="#camel-spring-configuration"></a>2.1. camel spring configuration</h3>
 <div class="listingblock">
-<div class="title">src/main/resources/application.properties</div>
+<div class="title">src/main/resources/application-camel.properties</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="properties">camel.springboot.main-run-controller=true</code></pre>
+<pre class="CodeRay highlight"><code data-lang="properties"># spring boot keep running if you not using spring-boot-web for example...
+camel.springboot.main-run-controller=true
+# actuator support:
+spring.profiles.active=camel
+management.context-path=/actuator/
+management.security.enabled=false
+# we wanna also post to camel endpoints (curl -XPOST ...):
+endpoints.camelroutes.read-only=false</code></pre>
 </div>
 </div>
 </div>
@@ -857,7 +865,101 @@ destination directory: <code>/tmp/camel-choice-out/</code></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="bom"><a class="anchor" href="#bom"></a>3. BOM</h2>
+<h2 id="actuator"><a class="anchor" href="#actuator"></a>3. Actuator</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">get routes:</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">http :8080/actuator/camel/routes</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">output:</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">[
+    {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">change-filename-header</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Started</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2 minutes</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptimeMillis</span><span class="delimiter">&quot;</span></span>: <span class="integer">142840</span>
+    },
+    {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">choice</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Started</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2 minutes</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptimeMillis</span><span class="delimiter">&quot;</span></span>: <span class="integer">142831</span>
+    },
+    {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">easier-exchange</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Started</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2 minutes</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptimeMillis</span><span class="delimiter">&quot;</span></span>: <span class="integer">142824</span>
+    },
+    {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">exchange-processor</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Started</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2 minutes</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptimeMillis</span><span class="delimiter">&quot;</span></span>: <span class="integer">142813</span>
+    },
+    {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">dir-to-dir</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Started</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2 minutes</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptimeMillis</span><span class="delimiter">&quot;</span></span>: <span class="integer">142798</span>
+    },
+    {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">garbage-dir-to-dir</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Started</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2 minutes</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptimeMillis</span><span class="delimiter">&quot;</span></span>: <span class="integer">142787</span>
+    },
+    {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">in-dir-to-jms</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Started</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2 minutes</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptimeMillis</span><span class="delimiter">&quot;</span></span>: <span class="integer">142774</span>
+    },
+    {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">jms-to-out-dir</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Started</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2 minutes</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">uptimeMillis</span><span class="delimiter">&quot;</span></span>: <span class="integer">142003</span>
+    }
+]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">now let&#8217;s say some processing is working incorrectly, so we wanna stop <code>change-filename-header</code> route:</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">http post :8080/actuator/camel/routes/change-filename-header/stop
+
+# output:
+HTTP/1.1 200
+Content-Length: 0
+Date: Fri, 15 Jun 2018 00:10:07 GMT
+X-Application-Context: application:spring-boot,camel</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">let&#8217;s check if it was stopped:</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">http :8080/actuator/camel/routes/change-filename-header/info</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">output:</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">change-filename-header</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Stopped</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">uptimeMillis</span><span class="delimiter">&quot;</span></span>: <span class="integer">0</span>
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="bom"><a class="anchor" href="#bom"></a>4. BOM</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="title">maven</div>
@@ -885,7 +987,7 @@ destination directory: <code>/tmp/camel-choice-out/</code></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="links"><a class="anchor" href="#links"></a>4. Links</h2>
+<h2 id="links"><a class="anchor" href="#links"></a>5. Links</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="./index.pdf">Documentation in PFD format</a></p>
@@ -900,7 +1002,7 @@ destination directory: <code>/tmp/camel-choice-out/</code></p>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-06-14 23:54:01 UTC
+Last updated 2018-06-15 00:14:00 UTC
 </div>
 </div>
 </body>
