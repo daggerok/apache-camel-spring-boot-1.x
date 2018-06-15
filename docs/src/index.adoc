@@ -33,10 +33,10 @@ include::../../README.adoc[tags=content]
 
 === camel spring configuration
 
-.src/main/resources/application.properties
+.src/main/resources/application-camel.properties
 [source,properties]
 ----
-include::../../src/main/resources/application.properties[tags=content]
+include::../../src/main/resources/application-camel.properties[tags=content]
 ----
 
 === move all files from directory
@@ -111,6 +111,97 @@ destination directory: `/tmp/camel-choice-out/`
 [source,java]
 ----
 include::../../src/main/java/daggerok/app/ChoiceCamelConfig.java[tags=choice]
+----
+
+== Actuator
+
+.get routes:
+[source,bash]
+----
+http :8080/actuator/camel/routes
+----
+
+.output:
+[source,json]
+----
+[
+    {
+        "id": "change-filename-header",
+        "status": "Started",
+        "uptime": "2 minutes",
+        "uptimeMillis": 142840
+    },
+    {
+        "id": "choice",
+        "status": "Started",
+        "uptime": "2 minutes",
+        "uptimeMillis": 142831
+    },
+    {
+        "id": "easier-exchange",
+        "status": "Started",
+        "uptime": "2 minutes",
+        "uptimeMillis": 142824
+    },
+    {
+        "id": "exchange-processor",
+        "status": "Started",
+        "uptime": "2 minutes",
+        "uptimeMillis": 142813
+    },
+    {
+        "id": "dir-to-dir",
+        "status": "Started",
+        "uptime": "2 minutes",
+        "uptimeMillis": 142798
+    },
+    {
+        "id": "garbage-dir-to-dir",
+        "status": "Started",
+        "uptime": "2 minutes",
+        "uptimeMillis": 142787
+    },
+    {
+        "id": "in-dir-to-jms",
+        "status": "Started",
+        "uptime": "2 minutes",
+        "uptimeMillis": 142774
+    },
+    {
+        "id": "jms-to-out-dir",
+        "status": "Started",
+        "uptime": "2 minutes",
+        "uptimeMillis": 142003
+    }
+]
+----
+
+.now let's say some processing is working incorrectly, so we wanna stop `change-filename-header` route:
+[source,bash]
+----
+http post :8080/actuator/camel/routes/change-filename-header/stop
+
+# output:
+HTTP/1.1 200
+Content-Length: 0
+Date: Fri, 15 Jun 2018 00:10:07 GMT
+X-Application-Context: application:spring-boot,camel
+----
+
+.let's check if it was stopped:
+[source,bash]
+----
+http :8080/actuator/camel/routes/change-filename-header/info
+----
+
+.output:
+[source,json]
+----
+{
+    "id": "change-filename-header",
+    "status": "Stopped",
+    "uptimeMillis": 0
+}
 ----
 
 == BOM
