@@ -37,7 +37,6 @@ class SpringIntegrationJmsComponentCustomizer implements ComponentCustomizer<Jms
 //end::jms-component-customizer[]
 
 //tag::integration-flow-config[]
-
 /**
  * Requires camel spring-integration-starter
  */
